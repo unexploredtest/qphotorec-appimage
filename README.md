@@ -1,0 +1,1 @@
+A script that generates an appimage for QPhotoRec
