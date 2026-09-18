@@ -1,0 +1,43 @@
+name: Build QPhotoRec Appimage
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install dependencies
+        run: |
+          sudo apt update && sudo apt upgrade
+          sudo apt install \
+            build-essential \
+            autoconf \
+            automake \
+            autotools-dev \
+            dh-autoreconf \
+            git \
+            pkg-config \
+            libncurses5-dev \
+            libncursesw5-dev \
+            e2fslibs-dev \
+            ntfs-3g-dev \
+            libjpeg-dev \
+            uuid-dev \
+            zlib1g-dev \
+            qt6-base-dev \
+            qt6-tools-dev \
+            libqt6svg6-dev
+
+      - name: Build Appimage
+        run: |
+          bash build.sh
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v7
+        with:
+          name: builds
+          path: *.AppImage
