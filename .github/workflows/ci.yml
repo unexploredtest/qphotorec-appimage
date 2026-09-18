@@ -4,15 +4,22 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
-
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
 
       - name: Install dependencies
         run: |
-          sudo apt update && sudo apt upgrade
+          sudo apt update && sudo apt upgrade -y
           sudo apt install \
             build-essential \
             autoconf \
@@ -34,10 +41,10 @@ jobs:
 
       - name: Build Appimage
         run: |
-          bash build.sh
+          bash build.sh ${{ matrix.arch }}
 
       - name: Upload AppImage
         uses: actions/upload-artifact@v7
         with:
-          name: build
+          name: build-${{ matrix.arch }}
           path: "QPhotoRec*.AppImage"
