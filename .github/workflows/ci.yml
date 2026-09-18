@@ -39,5 +39,5 @@ jobs:
       - name: Upload AppImage
         uses: actions/upload-artifact@v7
         with:
-          name: builds
-          path: "*.AppImage"
+          name: build
+          path: "QPhotoRec*.AppImage"
