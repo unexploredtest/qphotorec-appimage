@@ -52,7 +52,14 @@ wget "$LINUXDEPLOYQTURL"
 chmod a+x linuxdeploy-${ARCH}.AppImage
 chmod a+x linuxdeploy-plugin-qt-${ARCH}.AppImage
 
-export QMAKE=/usr/bin/qmake6
+# Use qmake6 only when VERSION_TAG is greater than v7.2 as they switch to qt6
+VERSION="${VERSION_TAG#v}"
+
+if [[ "$(printf '%s\n' '7.2' "$VERSION" | sort -V | tail -n1)" == "$VERSION" ]] \
+  && [[ "$VERSION" != "7.2" ]]; then
+  export QMAKE=/usr/bin/qmake6
+fi
+
 export NO_STRIP=1
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib:/usr/lib:/lib"
 

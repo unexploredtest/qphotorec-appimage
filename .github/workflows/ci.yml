@@ -37,7 +37,10 @@ jobs:
             zlib1g-dev \
             qt6-base-dev \
             qt6-tools-dev \
-            libqt6svg6-dev
+            libqt6svg6-dev \
+            qtbase5-dev \
+            qttools5-dev \
+            libqt5svg5-dev
 
       - name: Build Appimage
         run: |
