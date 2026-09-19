@@ -2,6 +2,9 @@ name: Build QPhotoRec Appimage
 
 on: [push, workflow_dispatch]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.runner }}
