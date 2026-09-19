@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Appimage
         run: |
-          bash build.sh ${{ matrix.arch }}
+          ARCH=${{ matrix.arch }} bash build.sh
 
       - name: Upload AppImage
         uses: actions/upload-artifact@v7

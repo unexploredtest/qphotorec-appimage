@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# Set architecture from command-line argument or default to x86_64
-ARCH="${1:-x86_64}"
+
+# Set architecture through the environment or default to x86_64
+ARCH="${ARCH:-x86_64}"
+
+# Set the TestDisk version tag through the environment or default to v7.2
+VERSION_TAG="${VERSION_TAG:-v7.2}"
 
 # Validate architecture
 if [[ ! "$ARCH" =~ ^(x86_64|aarch64)$ ]]; then
@@ -15,12 +19,19 @@ APPIMAGETOOLURL="https://github.com/AppImage/appimagetool/releases/download/cont
 LINUXDEPLOYURL="https://github.com/linuxdeploy/linuxdeploy/releases/latest/download/linuxdeploy-${ARCH}.AppImage"
 LINUXDEPLOYQTURL="https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/latest/download/linuxdeploy-plugin-qt-${ARCH}.AppImage"
 
+echo "Building TestDisk version: $VERSION_TAG"
 echo "Building for architecture: $ARCH"
 
 wget "$APPIMAGETOOLURL"
-chmod a+x appimagetool-${ARCH}.AppImage
+chmod a+x "appimagetool-${ARCH}.AppImage"
 
-git clone "$TESTDISKURL" --depth 1
+# Clone and check out the requested version tag
+git clone \
+  --branch "$VERSION_TAG" \
+  --depth 1 \
+  "$TESTDISKURL" \
+  testdisk
+
 cd testdisk
 
 sed -i \
